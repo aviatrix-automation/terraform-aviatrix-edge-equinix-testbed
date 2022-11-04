@@ -46,8 +46,8 @@ terraform apply -auto-approve
 
 ## Contributing
 
-Report issues/questions/feature requests on in the [issues](https://github.com/bayupw/terraform-aviatrix-edge-equinix-testbed/issues/new) section.
+Report issues/questions/feature requests on in the [issues](https://github.com/aviatrix-automation/terraform-aviatrix-edge-equinix-testbed/issues/new) section.
 
 ## License
 
-Apache 2 Licensed. See [LICENSE](https://github.com/bayupw/terraform-aviatrix-edge-equinix-testbed/tree/master/LICENSE) for full details.
+Apache 2 Licensed. See [LICENSE](https://github.com/aviatrix-automation/terraform-aviatrix-edge-equinix-testbed/tree/master/LICENSE) for full details.
