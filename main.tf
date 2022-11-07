@@ -31,4 +31,58 @@ resource "equinix_network_device" "this" {
 locals {
   acl_template_id = var.create_acl ? equinix_network_acl_template.this[0].id : var.acl_template_id
   ssh_key_name    = var.create_ssh_key ? equinix_network_ssh_key.this[0].name : var.ssh_key_name
+
+  router_interface_config = <<EOT
+    !
+    vrf definition WAN
+    rd ${try(var.router_wan_asn, "")}:1
+     !
+     address-family ipv4
+     exit-address-family
+    !
+    vrf definition LAN
+     rd ${try(var.router_lan_asn, "")}:2
+     !
+     address-family ipv4
+     exit-address-family
+    !
+    interface GigabitEthernet9
+     description "EDGE-WAN-NETWORK"
+     vrf forwarding WAN
+     ip address ${try(var.edge_wan_gw, "")} ${try(cidrnetmask(var.edge_wan_ip), "")}
+     no shut
+    exit
+    !
+    interface GigabitEthernet8
+     description "EDGE-LAN-NETWORK"
+     vrf forwarding LAN
+     ip address ${try(cidrhost(var.edge_lan_ip, 1), "")} ${try(cidrnetmask(var.edge_lan_ip), "")}
+     no shut
+    exit
+    !
+    interface GigabitEthernet10
+     description "IPERF-WAN-NETWORK"
+     vrf forwarding WAN
+     ip address ${try(var.iperf_wan_gw, "")} ${try(cidrnetmask(var.iperf_wan_ip), "")}
+     no shut
+    exit
+    !
+    interface Loopback100
+     vrf forwarding LAN
+     ip address 192.168.100.1 255.255.255.0
+     no shut
+    !
+    router bgp ${try(var.router_asn, "")}
+     bgp router-id ${try(var.edge_wan_gw, "")}
+     !
+     address-family ipv4 vrf LAN
+      network ${try(split("/", cidrsubnet(var.loopback, 0, 0))[0], "")}
+      neighbor ${try(split("/", var.edge_lan_ip)[0], "")} remote-as ${try(var.edge_asn, "")}
+      neighbor ${try(split("/", var.edge_lan_ip)[0], "")} local-as ${try(var.router_lan_asn, "")}
+      neighbor ${try(split("/", var.edge_lan_ip)[0], "")} activate
+     exit-address-family
+    end
+    !
+    EOT
 }
+

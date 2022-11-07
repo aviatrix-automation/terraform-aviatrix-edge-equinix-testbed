@@ -15,6 +15,10 @@ See file ```terraform.tfvars.examples``` for a sample of tfvars file. To run thi
 export AWS_ACCESS_KEY_ID="<aws-access-key-id>"
 export AWS_SECRET_ACCESS_KEY="<aws-access-key>"
 export AWS_REGION="us-east-1"
+export ARM_SUBSCRIPTION_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_TENANT_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_CLIENT_ID="aaaa-1111-bbbb-2222-cccc-3333"
+export ARM_CLIENT_SECRET="A1b2C3d4E5"
 export AVIATRIX_CONTROLLER_IP="<aviatrix-controller-fqdn-or-ip>"
 export AVIATRIX_USERNAME="<username>"
 export AVIATRIX_PASSWORD="<password>"
@@ -34,11 +38,15 @@ terraform plan
 terraform apply -auto-approve
 ```
 
-Provision Aviatrix Edge Gateways from Equinix Fabric Portal and wait until provisioning is completed. Once Aviatrix Edge Gateways are provisioned, set the variable ```update_egress_ip``` and ```create_device_links``` to ```true```.
+Provision Aviatrix Edge Gateways from Equinix Fabric Portal and wait until provisioning is completed. Configure router. Set the following terraform variables in tfvars or environment variables to true.
 
 ```bash
 export TF_VAR_update_egress_ip=true
 export TF_VAR_create_device_links=true
+export TF_VAR_attach_edge_aws=true
+export TF_VAR_attach_edge_azure=true
+export TF_VAR_create_transit_peering=true
+export TF_VAR_create_edge_bgpolan=true
 terraform init
 terraform plan
 terraform apply -auto-approve
