@@ -43,6 +43,14 @@ Provision Aviatrix Edge Gateways from Equinix Fabric Portal and wait until provi
 ```bash
 export TF_VAR_update_egress_ip=true
 export TF_VAR_create_device_links=true
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
+
+To configure edge attachment and BGPoLAN, set the following terraform variables in tfvars or environment variables to true.
+
+```bash
 export TF_VAR_attach_edge_aws=true
 export TF_VAR_attach_edge_azure=true
 export TF_VAR_create_transit_peering=true
