@@ -7,6 +7,7 @@ Terraform module to create Aviatrix Edge in Aviatrix Controller for Equinix Fabr
 Please make sure you have:
 - Aviatrix Controller 6.9 or above
 - AWS access key id and secret access key
+- Azure account credentials
 - Equinix API client id and secret
 
 See file ```terraform.tfvars.examples``` for a sample of tfvars file. To run this project, you will need to set the following environment variables or provider settings.
